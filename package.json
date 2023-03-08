@@ -1,0 +1,23 @@
+{
+  "name": "read_coponent_occurences",
+  "version": "1.0.0",
+  "description": "",
+  "main": "read_component_occurences.js",
+  "scripts": {
+    "dev": "node read_component_occurences.js",
+    "build": "browserify main.js -o bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "d3-node": "^3.0.0",
+    "d3node-barchart": "^0.1.1",
+    "d3node-output": "^1.0.2",
+    "glob": "^9.2.1"
+  },
+  "dependencies": {
+    "anychart": "^8.11.0"
+  }
+}
