@@ -1,13 +1,36 @@
 const fs = require('fs');
 const path = require('path');
 const util = require('util')
+const express = require("express");
+  
+const app = express();
+  
+app.listen(5000, () => {
+  console.log(`Server is up and running on 5000 ...`);
+});
+
+
 
 const startPath = '../instantly/src';
 const exportPath = '../instantly/src/components';
-const getExports = /((?<=export default function )|(?<=export default React.memo\()|(?<=export const )|(?<=export default (?!function|React)))(\w+)/g
+
+// The Regex pattern for styled-components: (?<=export const )|
+const getExports = new RegExp(`((?<=export default function )|(?<=export default React.memo\\()|(?<=export default (?!function|React)))(\\w+)`, "gm")
 const fileExtension = 'tsx';
 
 const allComponentNames = []
+
+/**
+ * 
+ * Problem with code. Because we also check for styled components the occurrences are not fully trustworthy
+ * Due to multiple styled-components having the same name, like Container or Title.
+ * 
+ * Fix:
+ * Exclude the path of the styled components, because they are only used in the corresponding parent file
+ * 
+ * Problem 2:
+ * In instantly project are 30 components, but this code only finds 27
+*/
 
 function getAllExports(startPath, regex, fileExtension = null) {
   const files = fs.readdirSync(startPath);
@@ -66,6 +89,7 @@ function searchWordInFiles(startPath, regex, fileExtension = null) {
       const matches = fileContent.match(regex);
       
       if (matches !== null) {
+        // console.log("regex: ", regex, "matches: ", matches, "length: ", matches.length)
         count += matches.length;
       }
     }
@@ -94,11 +118,12 @@ console.log(`Amount of components: ${allComponentExports.length}\n| Component Na
 
 const occurrences = []
 
-allComponentExports.forEach(e => {
-  var wordToSearch = new RegExp(`<${e}(?!\w+)`, "gm");
-  const occurrence = searchWordInFiles(startPath, wordToSearch, fileExtension);
+allComponentExports.forEach(word => {
+  //  <${word}(\s|>|$)
+  var wordRegex = new RegExp(`<${word}(\\W|$)`, "gm");
+  const occurrence = searchWordInFiles(startPath, wordRegex, fileExtension);
 
-  occurrences.push({ name: e, value: occurrence })
+  occurrences.push({ name: word, value: occurrence })
 })
 
 occurrences.sort(function(b, a) {
@@ -106,8 +131,41 @@ occurrences.sort(function(b, a) {
 });
 
 // Removed container styled components, because it skews the results, due to multiple definitions with the same name
-const removeZeroOccurrences = occurrences.filter(o => o.value > 0).filter(o => o.name !== 'Container').filter(o => o.name !== 'Wrapper')
+const removeZeroOccurrences = occurrences.filter(o => o.value > 1).filter(o => o.name !== 'Container').filter(o => o.name !== 'Wrapper')
 
+
+app.get("/", (req, res) => {
+  const chart = `
+  <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js" type="text/javascript"></script>
+  
+  <div id="container" style="width: 100%; height: 1400px;"></div>
+  
+  <script>
+    anychart.onDocumentReady(function() {
+      var data = {
+        header: ["Component name", "Occurrences"],
+        rows: ${JSON.stringify(removeZeroOccurrences)}
+      }
+      // create the chart
+      var chart = anychart.bar();
+    
+      // add data
+      chart.data(data);
+      chart.labels(true);
+    
+    
+      // set the chart title
+      chart.title("Instantly Component occurences");
+    
+      // draw
+      chart.container("container");
+      chart.draw();
+    });
+  </script>`
+
+
+  res.send(chart);
+});
 
 // console.log(util.inspect(removeZeroOccurrences, {showHidden: false, depth: null, colors: true}))
 console.log(JSON.stringify(removeZeroOccurrences, null, 4));
