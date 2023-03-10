@@ -2,10 +2,9 @@
   "name": "read_coponent_occurences",
   "version": "1.0.0",
   "description": "",
-  "main": "read_component_occurences.js",
+  "main": "main.js",
   "scripts": {
-    "dev": "node read_component_occurences.js",
-    "build": "browserify main.js -o bundle.js",
+    "dev": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
