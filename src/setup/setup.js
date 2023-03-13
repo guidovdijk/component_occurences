@@ -1,9 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 
-import { baseOptions, PROJECT_PATH, FILE_NAME } from '../utils/constants'
+import { 
+  baseOptions, 
+  PROJECT_PATH, 
+  FILE_NAME,
+  ACTIVE_FILTER
+} from '../utils/constants'
 
-const optionsFilePath = `${PROJECT_PATH}/${FILE_NAME}`
+import { 
+  createRegexFunctionFromString,
+  setRegexFromString 
+} from '../utils/helpers';
+
+const optionsFilePath = `${PROJECT_PATH}${path.sep}${FILE_NAME}`
 
 /**
  * Only set custom values if the key exist and a value is present.
@@ -22,28 +32,16 @@ const overrideToCustomOptions = (obj, newValues) => {
   return obj;
 }
 
-const setRegexFromString = (options) => {
-  for (const [key, value] of Object.entries(options.regexComponentDefinition)) {
-    if(!value){
-      continue
-    }
-
-    const regex = new RegExp(value)
-    options.regexComponentDefinition[key] = regex
-  }
-
-  return options
-}
 
 const setPaths = (options) => {
   options.folderPathIgnore.map(p => {
-    return `${PROJECT_PATH}/p`
+    return `${PROJECT_PATH}${path.sep}${p}`
   });
   options.componentFolder.map(p => {
-    return `${PROJECT_PATH}/p`
+    return `${PROJECT_PATH}${path.sep}${p}`
   });
   options.occurrenceFolder.map(p => {
-    return `${PROJECT_PATH}/p`
+    return `${PROJECT_PATH}${path.sep}${p}`
   });
 
   return options
@@ -58,7 +56,7 @@ const setOptions = () => {
     const optionsFileContent = JSON.parse(fs.readFileSync(optionsFilePath, 'utf8'))
 
     let newOptions = overrideToCustomOptions(baseOptions, optionsFileContent)
-    newOptions = setRegexFromString(newOptions)
+    // newOptions = setRegexFromString(newOptions)
     newOptions = setPaths(newOptions)
   
     return newOptions
@@ -68,4 +66,43 @@ const setOptions = () => {
   }
 }
 
+const getCurrentActiveFilter = (options) => {
+  if(!['react', 'vue', 'angular', 'custom'].includes(options.activeRegex)){
+    throw new Error("Please make the 'activeRegex' value is set to 'react', 'vue', 'angular', or 'custom'")
+  }
+
+  const filter = ACTIVE_FILTER[options.activeRegex]
+
+  console.log(filter)
+
+  if(options.activeRegex === 'custom'){
+    const custom = options.customRegex
+
+    if(!custom){
+      throw new Error("Please make sure a 'customRegex' object is set in the occurrence.json")
+    }
+
+    if(!custom.componentDefinition){
+      throw new Error("Please make sure a 'customRegex.componentDefinition' Regex is set in the occurrence.json")
+    }
+
+    if(!custom.componentOccurrences){
+      throw new Error("Please make sure a 'customRegex.componentOccurrences' Regex is set in the occurrence.json")
+    }
+
+    if(!custom.fileExtensions || custom.fileExtensions.length === 0){
+      throw new Error("Please make sure a 'customRegex.fileExtensions' Array is set with file extensions as a string (e.g. \".jsx\") in the occurrence.json")
+    }
+
+    return {
+      EXPORT_REGEX: setRegexFromString(custom.componentDefinition),
+      COMPONENT_OCCURRENCE_REGEX: createRegexFunctionFromString(custom.componentOccurrences),
+      FILE_EXTENSIONS: custom.fileExtensions
+    }
+  } else {
+    return filter
+  }
+}
+
 export const options = options ? options : setOptions()
+export const currentActiveFilter = currentActiveFilter ? currentActiveFilter : getCurrentActiveFilter(options)

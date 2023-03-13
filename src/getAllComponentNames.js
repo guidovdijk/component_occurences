@@ -3,7 +3,7 @@ const path = require('path');
 
 const allComponentNames = []
 
-export const getAllComponentNames = (startPath, regex, fileExtension = null) => {
+export const getAllComponentNames = (startPath, regex, fileExtensions = null) => {
   const files = fs.readdirSync(startPath);
 
   files.forEach((file) => {
@@ -11,14 +11,16 @@ export const getAllComponentNames = (startPath, regex, fileExtension = null) => 
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
-      getAllComponentNames(filePath, regex, fileExtension);
+      getAllComponentNames(filePath, regex, fileExtensions);
     } else {
-      if (fileExtension && path.extname(file) !== `.${fileExtension}`) {
+      const fileExt = path.extname(file)
+
+      if (fileExtensions && !fileExtensions.includes(fileExt)) {
         return;
       }
 
       if(
-        filePath.includes('.story') || 
+        filePath.includes('.story') ||
         filePath.includes('.test') || 
         filePath.includes('Icons') ||
         filePath.includes('Illucons')
