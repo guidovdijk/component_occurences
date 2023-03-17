@@ -50,7 +50,7 @@ filteredComponentNames.forEach(word => {
   let value = 0
   
   options.occurrenceFolder.forEach(folder => {
-    value += getAllOccurrences(folder, COMPONENT_OCCURRENCE_REGEX(word), FILE_EXTENSIONS);
+    value += getAllOccurrences(folder, COMPONENT_OCCURRENCE_REGEX(word), FILE_EXTENSIONS, options.fileIgnore);
   }); 
 
   occurrences.push({ name: word, value })
