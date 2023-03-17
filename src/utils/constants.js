@@ -15,16 +15,7 @@ export const ACTIVE_FILTER = {
 }
 
 /**
- * TODO Just use one active Regex to find the components and occurrences
- * If people use multiple frameworks in one project it would be inconsistent anyway, because
- * The component occurrences are all defined the same e.g. "<Test". So if we want to
- * make it work with multiple frameworks in one project we would also need to look at the import statements
- * and do way more validation, which is not worth it (imo).
- * 
- * No need for multiple regex definitions. Just use one and specify which file extensions
- * the fs should look for.
- * 
- * Also a good idea to check for component name sif they are import with an alias
+ * Also a good idea to check for component names if they are import with an alias
  * `SomethingNew` will not be added to the occurrence count of button:
  *  import Button as SomethingNew from '...'
  * 

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-export const getAllOccurrences = (startPath, regex, fileExtensions = null) => {
+export const getAllOccurrences = (startPath, regex, fileExtensions) => {
   let count = 0;
   const files = fs.readdirSync(startPath);
 
@@ -13,12 +13,10 @@ export const getAllOccurrences = (startPath, regex, fileExtensions = null) => {
       count += getAllOccurrences(filePath, regex, fileExtensions);
     } else {
       const fileExt = path.extname(file)
+      const isIncorrectFileExtension = !fileExtensions && !fileExtensions.includes(fileExt)
+      const isIgnoredFileExtension = filePath.includes('.story') || filePath.includes('.test')
 
-      if (fileExtensions && !fileExtensions.includes(fileExt)) {
-        return;
-      }
-
-      if(filePath.includes('.story') || filePath.includes('.test')){
+      if (isIncorrectFileExtension || isIgnoredFileExtension) {
         return;
       }
 

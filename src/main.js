@@ -39,13 +39,13 @@ const {
 } = currentActiveFilter
 
 const allComponentExports = options.componentFolder.map(folder => {
-  return getAllComponentNames(folder, EXPORT_REGEX, FILE_EXTENSIONS)
+  return getAllComponentNames(folder, EXPORT_REGEX, FILE_EXTENSIONS, options.folderPathIgnore)
 }).flat(1);
 
 
 const filteredComponentNames = filterByComponentName(allComponentExports, options.componentNameIgnore)
 
-// * styled-components with the same name exist and could skew results
+// * styled-components with the same name exist and skew the results
 filteredComponentNames.forEach(word => {
   let value = 0
   

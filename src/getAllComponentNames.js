@@ -1,9 +1,11 @@
+import { filterByPath } from './utils/helpers';
+
 const fs = require('fs');
 const path = require('path');
 
 const allComponentNames = []
 
-export const getAllComponentNames = (startPath, regex, fileExtensions = null) => {
+export const getAllComponentNames = (startPath, regex, fileExtensions, folderPathIgnore) => {
   const files = fs.readdirSync(startPath);
 
   files.forEach((file) => {
@@ -11,7 +13,7 @@ export const getAllComponentNames = (startPath, regex, fileExtensions = null) =>
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
-      getAllComponentNames(filePath, regex, fileExtensions);
+      getAllComponentNames(filePath, regex, fileExtensions, folderPathIgnore);
     } else {
       const fileExt = path.extname(file)
 
@@ -19,12 +21,9 @@ export const getAllComponentNames = (startPath, regex, fileExtensions = null) =>
         return;
       }
 
-      if(
-        filePath.includes('.story') ||
-        filePath.includes('.test') || 
-        filePath.includes('Icons') ||
-        filePath.includes('Illucons')
-      ){
+      const ignoreComponent = filterByPath(folderPathIgnore, filePath)
+
+      if(ignoreComponent){
         return;
       }
       

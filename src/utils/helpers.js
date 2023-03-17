@@ -6,6 +6,14 @@ export const filterByComponentName = (arr, ignoreComponentArr) => {
   return arr.filter(item => !ignoreComponentArr.includes(item));
 }
 
+/**
+ * Check if the path of the current file has any part of its path equal to the paths
+ * that need to be ignored.
+ */
+export const filterByPath = (arr, ignorePath) => {
+  return arr.some(substring => ignorePath.includes(substring))
+}
+
 export const setRegexFromString = (text) => {
   if(!text){
     throw new Error("Please provide a valid Regex for the componentDefinition")
