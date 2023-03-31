@@ -3,21 +3,20 @@ import process from 'process';
 
 import {
   PROJECT_NAME,
-  PORT
+  PORT,
+  GLOB_SETTINGS
 } from "./utils/constants";
 
 import { options, currentActiveFilter } from './setup/setup'
 
-import { filterByComponentName, filterByOccurrenceCount } from './utils/helpers'
+import { getFileContent } from './utils/helpers'
 
 import { createChartTemplate } from "./templates/chartTemplate";
 
 import { getAllComponentNames } from "./getAllComponentNames";
 import { getAllOccurrences } from "./getAllOccurrences";
 
-
 const app = express();
-const occurrences = []
 
 if(!options){
   process.exit()
@@ -35,35 +34,24 @@ console.log(`Current project: ${PROJECT_NAME}`);
 const {
   EXPORT_REGEX, 
   COMPONENT_OCCURRENCE_REGEX, 
-  FILE_EXTENSIONS
 } = currentActiveFilter
 
-const allComponentExports = options.componentFolder.map(folder => {
-  return getAllComponentNames(folder, EXPORT_REGEX, FILE_EXTENSIONS, options.folderPathIgnore)
-}).flat(1);
 
 
-const filteredComponentNames = filterByComponentName(allComponentExports, options.componentNameIgnore)
+const filteredOccurrences = async() => {
+  const componentFiles = await getFileContent(options.componentFolder, GLOB_SETTINGS)
+  const allFiles = await getFileContent(options.occurrenceFolder, GLOB_SETTINGS)
+  const componentNames = getAllComponentNames(componentFiles, EXPORT_REGEX, options)
 
-// * styled-components with the same name exist and skew the results
-filteredComponentNames.forEach(word => {
-  let value = 0
-  
-  options.occurrenceFolder.forEach(folder => {
-    value += getAllOccurrences(folder, COMPONENT_OCCURRENCE_REGEX(word), FILE_EXTENSIONS, options.fileIgnore);
-  }); 
+  const occurrences = getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX, options)
 
-  occurrences.push({ name: word, value })
-})
+  return occurrences
+};
 
 
-const filteredOccurrences = filterByOccurrenceCount(occurrences, options.cutoffThreshold)
-filteredOccurrences.sort((b, a) => a.value - b.value)
-
-console.log(filteredOccurrences)
-
-app.get("/", (req, res) => {
-  const chart = createChartTemplate(filteredOccurrences, options.title)
+app.get("/", async (req, res) => {
+  const results = await filteredOccurrences()
+  const chart = createChartTemplate(results, options.title)
 
   res.send(chart);
 });

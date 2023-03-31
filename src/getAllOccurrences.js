@@ -1,35 +1,23 @@
-import { filterByFileExtensions } from './utils/helpers';
+import { filterByOccurrenceCount } from './utils/helpers';
 
-const fs = require('fs');
-const path = require('path');
 
-export const getAllOccurrences = (startPath, regex, fileExtensions, fileIgnoreArr) => {
-  let count = 0;
-  const files = fs.readdirSync(startPath);
+export const getAllOccurrences = (componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX, options) => {
+  const occurrences = componentNames.map(name => {
+    const regex = COMPONENT_OCCURRENCE_REGEX(name)
 
-  files.forEach((file) => {
-    const filePath = path.join(startPath, file);
-    const stat = fs.statSync(filePath);
+    let value = 0
+    allFiles.forEach(file => {
+      const matches = file.match(regex);
 
-    if (stat.isDirectory()) {
-      count += getAllOccurrences(filePath, regex, fileExtensions, fileIgnoreArr);
-    } else {
-      const fileExt = path.extname(file)
-      const isIncorrectFileExtension = !fileExtensions && !fileExtensions.includes(fileExt)
-      const isIgnoredFileExtension = filterByFileExtensions(fileIgnoreArr, filePath)
-
-      if (isIncorrectFileExtension || isIgnoredFileExtension) {
-        return;
+      if(matches !== null){
+        value += matches.length
       }
+    });
 
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      const matches = fileContent.match(regex);
-      
-      if (matches !== null) {
-        count += matches.length;
-      }
-    }
-  });
+    return { name, value }
+  })
 
-  return count;
+  const result = filterByOccurrenceCount(occurrences, options.cutoffThreshold)
+  
+  return result.sort((a, b) => b.value - a.value)
 }

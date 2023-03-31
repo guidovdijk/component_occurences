@@ -1,10 +1,8 @@
 {
   "title": "Instantly Component Occurrence",
   "componentNameIgnore": ["Container", "Wrapper"],
-  "filenameIgnore": [".test", ".story."],
-  "folderPathIgnore": ["Icons", "Illucons"],
-  "componentFolder": ["../instantly/src/components"],
-  "occurrenceFolder": ["../instantly/src"],
+  "componentFolder": ["../instantly/src/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"],
+  "occurrenceFolder": ["../instantly/src/**/!(Icons|Illucons)/*!(.story|.test).tsx"],
   "cutoffThreshold": 1,
   "activeRegex": "react",
   "customRegex": {

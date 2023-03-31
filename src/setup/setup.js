@@ -35,9 +35,6 @@ const overrideCustomOptions = (obj, newValues) => {
 
 const setPaths = (options) => {
   const basePath = `${PROJECT_PATH}${path.sep}` 
-  options.folderPathIgnore.map(p => {
-    return `${basePath}${p}`
-  });
   options.componentFolder.map(p => {
     return `${basePath}${p}`
   });
