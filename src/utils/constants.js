@@ -38,6 +38,5 @@ export const baseOptions = {
   customRegex: {
     componentDefinition: '',
     componentOccurrences: '',
-    fileExtensions: []
   }
 }

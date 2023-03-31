@@ -1,6 +1,5 @@
 import { filterByOccurrenceCount } from './utils/helpers';
 
-
 export const getAllOccurrences = (componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX, options) => {
   const occurrences = componentNames.map(name => {
     const regex = COMPONENT_OCCURRENCE_REGEX(name)

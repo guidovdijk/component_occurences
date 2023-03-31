@@ -22,14 +22,11 @@ if(!options){
   process.exit()
 }
 
-console.log(options);
-
 app.listen(PORT, () => {
   console.log(`Server is up and running on ${PORT} ...`);
 });
 
 console.log(`Current project: ${PROJECT_NAME}`);
-
 
 const {
   EXPORT_REGEX, 
@@ -37,8 +34,7 @@ const {
 } = currentActiveFilter
 
 
-
-const filteredOccurrences = async() => {
+const getOccurrenceData = async() => {
   const componentFiles = await getFileContent(options.componentFolder, GLOB_SETTINGS)
   const allFiles = await getFileContent(options.occurrenceFolder, GLOB_SETTINGS)
   const componentNames = getAllComponentNames(componentFiles, EXPORT_REGEX, options)
@@ -48,9 +44,8 @@ const filteredOccurrences = async() => {
   return occurrences
 };
 
-
 app.get("/", async (req, res) => {
-  const results = await filteredOccurrences()
+  const results = await getOccurrenceData()
   const chart = createChartTemplate(results, options.title)
 
   res.send(chart);

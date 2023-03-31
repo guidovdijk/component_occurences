@@ -7,7 +7,6 @@
   "activeRegex": "react",
   "customRegex": {
     "componentDefinition": "",
-    "componentOccurrences": "",
-    "fileExtensions": []
+    "componentOccurrences": ""
   }
 }

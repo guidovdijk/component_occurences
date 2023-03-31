@@ -13,10 +13,6 @@ export const filterByComponentName = (arr, ignoreComponentArr) => {
   return arr.filter(item => !ignoreComponentArr.includes(item));
 }
 
-export const filterByFileExtensions = (arr, fileExtension) => {
-  return arr.some(el => fileExtension.includes(el))
-}
-
 export const getFileContent = async(path, settings) => {
   const paths = await glob(path, settings)
 
@@ -36,13 +32,6 @@ export const getFileContent = async(path, settings) => {
   return result
 }
 
-/**
- * Check if the path of the current file has any part of its path equal to the paths
- * that need to be ignored.
- */
-export const filterByPath = (arr, ignorePath) => {
-  return arr.some(el => el.includes(ignorePath))
-}
 
 export const setRegexFromString = (text) => {
   if(!text){
