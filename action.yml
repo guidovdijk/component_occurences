@@ -18,9 +18,10 @@ inputs:
 outputs:
   NOT_USED_COMPONENTS:
     description: "list of packages in package.json and not used in the code"
+
 runs:
   using: "node16"
-  main: "index.js"
+  main: "dist/index.js"
 branding:
   icon: "folder"
   color: "yellow"

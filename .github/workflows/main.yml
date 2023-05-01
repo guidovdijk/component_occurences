@@ -1,0 +1,20 @@
+on: [push]
+
+jobs:
+  unused_components_checker:
+    runs-on: ubuntu-latest
+    name: testing component checker
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: components check
+        uses: ./
+        with:
+          COMPONENT_FOLDER: '["./test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+          OCCURRENCE_FOLDER: '["./test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+          COMPONENT_NAME_IGNORE: '["Container"]'
+      # Use the output from the `hello` step
+      - name: Get the components
+        run: echo "components $"

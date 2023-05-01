@@ -24,11 +24,12 @@ A GitHub action to check if your project contains any unused components
 ## Example Usage
 
 ```
+on: commit
 - uses: actions/checkout@v1
-- name: packages check
+- name: components check
   uses: guidovdijk/component_occurences/tree/github-action@v1
   with:
     COMPONENT_FOLDER:  '["src/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
-    OCCURRENCE_FOLDER:  '["/src/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+    OCCURRENCE_FOLDER:  '["src/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
     COMPONENT_NAME_IGNORE:  '["Container"]'
 ```
