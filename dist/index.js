@@ -9851,9 +9851,16 @@ const core = __nccwpck_require__(186);
 
 const run = async() => {
   try {
-    const { componentFolder, occurrenceFolder } = createCwdPaths(core.getInput('COMPONENT_FOLDER'), core.getInput('OCCURRENCE_FOLDER'))
+    const baseComponentFolder = core.getInput('COMPONENT_FOLDER')
+    const baseOccurrenceFolder = core.getInput('OCCURRENCE_FOLDER')
     const componentNameIgnore = core.getInput('COMPONENT_NAME_IGNORE');
     const activeRegex = core.getInput('ACTIVE_REGEX');
+
+    if(!baseComponentFolder || !baseOccurrenceFolder){
+      throw new Error("Please make sure the COMPONENT_FOLDER and OCCURRENCE_FOLDER are filled in")
+    }
+
+    const { componentFolder, occurrenceFolder } = createCwdPaths(JSON.parse(baseComponentFolder), JSON.parse(baseOccurrenceFolder))
 
     console.log({
       repoFullPath,
