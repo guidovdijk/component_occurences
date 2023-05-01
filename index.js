@@ -24,18 +24,10 @@ const run = async() => {
 
     const { componentFolder, occurrenceFolder } = createCwdPaths(JSON.parse(baseComponentFolder), JSON.parse(baseOccurrenceFolder))
 
-    console.log({
-      componentFolder,
-      occurrenceFolder,
-      componentNameIgnore,
-      activeRegex
-    })
-
     const {
       EXPORT_REGEX, 
       COMPONENT_OCCURRENCE_REGEX, 
     } = getCurrentActiveFilter(activeRegex)
-
 
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
@@ -43,16 +35,12 @@ const run = async() => {
 
     const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
-    console.log({
-      componentFiles,
-      allFiles,
-      componentNames,
-      NOT_USED_PACKAGES
-    })
-
     core.info(`NOT_USED_COMPONENTS: ${JSON.stringify(NOT_USED_PACKAGES)}`);
     core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES));
-    core.setOutput("TEST", "test value");
+
+    if(NOT_USED_PACKAGES && NOT_USED_PACKAGES.length > 0){
+      throw new Error("Unused components are found")
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
