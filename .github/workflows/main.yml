@@ -11,7 +11,6 @@ jobs:
         uses: actions/checkout@v3
       - name: components check
         id: components
-        continue-on-error: true
         uses: ./
         with:
           COMPONENT_FOLDER: '["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
