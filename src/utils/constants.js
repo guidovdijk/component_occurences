@@ -1,9 +1,6 @@
 export const GLOB_SETTINGS = { 
   withFileTypes: false,
-  noDir: true,
-  ignore: {
-    ignored: (p) => p.name.includes("story") || p.name.includes("test")
-  }
+  noDir: true
 };
 
 export const ACTIVE_FILTER = {
