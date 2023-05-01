@@ -1,14 +1,14 @@
+name: main
+
 on: [push]
 
 jobs:
-  unused_components_checker:
+  run:
     runs-on: ubuntu-latest
     name: testing component checker
     steps:
-      # To use this repository's private action,
-      # you must check out the repository
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: components check
         uses: ./
         with:
