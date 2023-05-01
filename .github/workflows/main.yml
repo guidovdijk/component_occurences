@@ -5,19 +5,18 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    continue-on-error: true
     name: testing component checker
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: components check
         id: components
+        continue-on-error: true
         uses: ./
         with:
           COMPONENT_FOLDER: '["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           OCCURRENCE_FOLDER: '["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           COMPONENT_NAME_IGNORE: '["Container"]'
       - name: Get the components
+        continue-on-error: true
         run: echo "components ${{steps.components.outputs.NOT_USED_COMPONENTS}}"
-      - name: Get test
-        run: echo "components ${{steps.components.outputs.TEST}}"
