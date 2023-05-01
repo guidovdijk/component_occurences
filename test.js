@@ -30,8 +30,6 @@ const run = async() => {
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
     const componentNames = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
-    console.log("componentFiles: ", componentFiles)
-    console.log("allFiles: ", allFiles)
 
     const NOT_USED_PACKAGES = getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
 

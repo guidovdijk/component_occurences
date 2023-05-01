@@ -3205,8 +3205,6 @@ const getCurrentActiveFilter = (activeRegex) => {
 
 const createCwdPaths = (componentFolderOld, occurrenceFolderOld) => {
   const repoFullPath = process.cwd()
-
-  console.log({componentFolderOld, occurrenceFolderOld})
   
   const componentFolder = componentFolderOld.map(folder => {
     return `${repoFullPath}${path.sep}${folder}`.replace(/\\/g, '/')
@@ -9764,7 +9762,6 @@ const filterByComponentName = (arr, ignoreComponentArr) => {
 const getFileContent = async(path, settings) => {
   const paths = await glob(path, settings)
   
-  console.log(path)
   const files = paths.map(async file => {
     try {
       const content = await external_fs_.promises.readFile(file);
