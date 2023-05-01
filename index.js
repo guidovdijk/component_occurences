@@ -18,6 +18,13 @@ const run = async() => {
     const componentNameIgnore = core.getInput('COMPONENT_NAME_IGNORE');
     const activeRegex = core.getInput('ACTIVE_REGEX');
     
+    console.log({
+      componentFolder,
+      occurrenceFolder,
+      componentNameIgnore,
+      activeRegex
+    })
+
     const {
       EXPORT_REGEX, 
       COMPONENT_OCCURRENCE_REGEX, 
