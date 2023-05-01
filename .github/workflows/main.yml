@@ -19,8 +19,8 @@ jobs:
         id: components
         uses: ./
         with:
-          COMPONENT_FOLDER: '["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
-          OCCURRENCE_FOLDER: '["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+          COMPONENT_FOLDER: '["${{GITHUB_WORKSPACE}}/test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+          OCCURRENCE_FOLDER: '["${{GITHUB_WORKSPACE}}/test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           COMPONENT_NAME_IGNORE: '["Container"]'
       # Use the output from the `hello` step
       - name: Get the components
