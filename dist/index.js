@@ -9839,8 +9839,9 @@ const run = async() => {
     const occurrenceFolder = core.getInput('OCCURRENCE_FOLDER');
     const componentNameIgnore = core.getInput('COMPONENT_NAME_IGNORE');
     const activeRegex = core.getInput('ACTIVE_REGEX');
-    
+    let repoFullPath = process.cwd()
     console.log({
+      repoFullPath,
       componentFolder,
       occurrenceFolder,
       componentNameIgnore,
