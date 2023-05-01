@@ -17,5 +17,4 @@ jobs:
           COMPONENT_FOLDER: '["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           OCCURRENCE_FOLDER: '["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           COMPONENT_NAME_IGNORE: '["Container"]'
-      - name: Get the components
-        run: echo "components ${{steps.components.outputs.NOT_USED_COMPONENTS}}"
+        run: echo "components $GITHUB_OUTPUT"
