@@ -1,6 +1,6 @@
 import { filterByOccurrenceCount } from './utils/helpers';
 
-export const getAllOccurrences = (componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX, options) => {
+export const getAllOccurrences = (componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX) => {
   const occurrences = componentNames.map(name => {
     const regex = COMPONENT_OCCURRENCE_REGEX(name)
 
@@ -16,7 +16,7 @@ export const getAllOccurrences = (componentNames, allFiles, COMPONENT_OCCURRENCE
     return { name, value }
   })
 
-  const result = filterByOccurrenceCount(occurrences, options.cutoffThreshold)
+  const result = filterByOccurrenceCount(occurrences)
   
   return result.sort((a, b) => b.value - a.value)
 }

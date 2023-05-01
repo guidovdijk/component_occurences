@@ -2,8 +2,8 @@ import { glob } from 'glob'
 import { promises as fsPromises } from 'fs'
 
 
-export const filterByOccurrenceCount = (arr, countThreshold) => {
-  return arr.filter(o => o.value > countThreshold)
+export const filterByOccurrenceCount = (arr) => {
+  return arr.filter(o => o.value == 0)
 }
 
 export const filterByComponentName = (arr, ignoreComponentArr) => {

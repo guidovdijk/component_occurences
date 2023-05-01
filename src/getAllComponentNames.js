@@ -1,9 +1,9 @@
 import { filterByComponentName } from './utils/helpers';
 
-export const getAllComponentNames = (componentFiles, EXPORT_REGEX, options) => {
+export const getAllComponentNames = (componentFiles, EXPORT_REGEX, componentNameIgnore) => {
   const matches = componentFiles.map(file => {
     const names = file.match(EXPORT_REGEX);
-    const filteredComponentNames = filterByComponentName(names, options.componentNameIgnore)
+    const filteredComponentNames = filterByComponentName(names, componentNameIgnore)
 
     if(filteredComponentNames){
       return filteredComponentNames

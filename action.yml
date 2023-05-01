@@ -1,0 +1,26 @@
+name: "Unused component checker"
+description: "checks the entire project to ensure no unused components exist"
+inputs:
+  COMPONENT_FOLDER:
+    description: "Folders where all the components are located"
+    required: true
+  OCCURRENCE_FOLDER:
+    description: "Folder that will be checked for unused components"
+    required: true
+  COMPONENT_NAME_IGNORE:
+    description: "Names that should be ignored"
+    required: false
+    default: []
+  ACTIVE_REGEX:
+    required: false
+    default: "react"
+
+outputs:
+  NOT_USED_COMPONENTS:
+    description: "list of packages in package.json and not used in the code"
+runs:
+  using: "node16"
+  main: "index.js"
+branding:
+  icon: "folder"
+  color: "yellow"
