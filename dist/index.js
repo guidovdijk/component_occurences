@@ -3202,6 +3202,18 @@ const getCurrentActiveFilter = (activeRegex) => {
   return filter
 }
 
+const createCwdPaths = (componentFolder, occurrenceFolder) => {
+  const repoFullPath = process.cwd()
+
+  const newComponentFolder = componentFolder.map(folder => {
+    return `${repoFullPath}/${folder}`
+  })  
+  const newOccurrenceFolder = occurrenceFolder.map(folder => {
+    return `${repoFullPath}/${folder}`
+  })  
+
+  return { newComponentFolder, newOccurrenceFolder }
+}
 // EXTERNAL MODULE: ./node_modules/brace-expansion/index.js
 var brace_expansion = __nccwpck_require__(850);
 ;// CONCATENATED MODULE: ./node_modules/minimatch/dist/mjs/brace-expressions.js
@@ -9835,11 +9847,10 @@ const core = __nccwpck_require__(186);
 
 const run = async() => {
   try {
-    const componentFolder = core.getInput('COMPONENT_FOLDER');
-    const occurrenceFolder = core.getInput('OCCURRENCE_FOLDER');
+    const { componentFolder, occurrenceFolder } = createCwdPaths(core.getInput('COMPONENT_FOLDER'), core.getInput('OCCURRENCE_FOLDER'))
     const componentNameIgnore = core.getInput('COMPONENT_NAME_IGNORE');
     const activeRegex = core.getInput('ACTIVE_REGEX');
-    let repoFullPath = process.cwd()
+
     console.log({
       repoFullPath,
       componentFolder,

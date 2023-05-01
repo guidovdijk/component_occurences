@@ -4,7 +4,7 @@ import {
   GLOB_SETTINGS
 } from "./src/utils/constants";
 
-import { getCurrentActiveFilter } from './src/setup/setup'
+import { getCurrentActiveFilter, createCwdPaths } from './src/setup/setup'
 
 import { getFileContent } from './src/utils/helpers'
 
@@ -13,11 +13,10 @@ import { getAllOccurrences } from "./src/getAllOccurrences";
 
 const run = async() => {
   try {
-    const componentFolder = core.getInput('COMPONENT_FOLDER');
-    const occurrenceFolder = core.getInput('OCCURRENCE_FOLDER');
+    const { componentFolder, occurrenceFolder } = createCwdPaths(core.getInput('COMPONENT_FOLDER'), core.getInput('OCCURRENCE_FOLDER'))
     const componentNameIgnore = core.getInput('COMPONENT_NAME_IGNORE');
     const activeRegex = core.getInput('ACTIVE_REGEX');
-    let repoFullPath = process.cwd()
+
     console.log({
       repoFullPath,
       componentFolder,

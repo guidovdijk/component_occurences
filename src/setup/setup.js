@@ -12,3 +12,16 @@ export const getCurrentActiveFilter = (activeRegex) => {
 
   return filter
 }
+
+export const createCwdPaths = (componentFolder, occurrenceFolder) => {
+  const repoFullPath = process.cwd()
+
+  const newComponentFolder = componentFolder.map(folder => {
+    return `${repoFullPath}/${folder}`
+  })  
+  const newOccurrenceFolder = occurrenceFolder.map(folder => {
+    return `${repoFullPath}/${folder}`
+  })  
+
+  return { newComponentFolder, newOccurrenceFolder }
+}
