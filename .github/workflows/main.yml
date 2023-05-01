@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: components check
-        uses: /
+        uses: ./
         with:
           COMPONENT_FOLDER: '["./test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           OCCURRENCE_FOLDER: '["./test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
