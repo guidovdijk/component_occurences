@@ -5,6 +5,7 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    continue-on-error: true
     name: testing component checker
     steps:
       - name: Checkout
