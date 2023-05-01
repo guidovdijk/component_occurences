@@ -10,7 +10,7 @@ inputs:
   COMPONENT_NAME_IGNORE:
     description: "Names that should be ignored"
     required: false
-    default: []
+    default: "[]"
   ACTIVE_REGEX:
     required: false
     default: "react"
