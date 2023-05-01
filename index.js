@@ -36,10 +36,6 @@ const run = async() => {
     const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
     core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES, null, 2));
-
-    if(NOT_USED_PACKAGES && NOT_USED_PACKAGES.length > 0){
-      throw new Error("Unused components are found")
-    }
   } catch (error) {
     core.setFailed(error.message);
   }

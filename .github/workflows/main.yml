@@ -6,15 +6,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: testing component checker
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: components check
         id: components
+        continue-on-error: true
         uses: ./
         with:
           COMPONENT_FOLDER: '["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           OCCURRENCE_FOLDER: '["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           COMPONENT_NAME_IGNORE: '["Container"]'
-        run: echo "components $GITHUB_OUTPUT"
+      - name: Get the components
+        if: ${{steps.components.outputs.NOT_USED_COMPONENTS > 0}}
+        run: echo "::error unused components found ${{steps.components.outputs.NOT_USED_COMPONENTS}}"
