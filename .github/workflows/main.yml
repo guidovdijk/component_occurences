@@ -3,30 +3,24 @@ name: main
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: build
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - name: Install modules
-        run: yarn
   test:
     runs-on: ubuntu-latest
     name: testing component checker
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+        node-version: 16.x
+      - name: Install modules
+        run: yarn
       - name: components check
         id: components
         uses: ./
         with:
-          COMPONENT_FOLDER: '["${GITHUB_WORKSPACE}/test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
-          OCCURRENCE_FOLDER: '["${GITHUB_WORKSPACE}/test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+          COMPONENT_FOLDER: '["./test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
+          OCCURRENCE_FOLDER: '["./test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
           COMPONENT_NAME_IGNORE: '["Container"]'
       # Use the output from the `hello` step
       - name: Get the components
