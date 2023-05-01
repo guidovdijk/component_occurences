@@ -10,6 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: components check
+        id: components
         uses: ./
         with:
           COMPONENT_FOLDER: '["./test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]'
@@ -17,4 +18,4 @@ jobs:
           COMPONENT_NAME_IGNORE: '["Container"]'
       # Use the output from the `hello` step
       - name: Get the components
-        run: echo "components $"
+        run: echo "components ${{steps.components.outputs.NOT_USED_COMPONENTS}}"
