@@ -38,7 +38,6 @@ const run = async() => {
     core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES, null, 2));
 
     if(NOT_USED_PACKAGES && NOT_USED_PACKAGES.length > 0){
-      core.warning("Unused components are found", JSON.stringify(NOT_USED_PACKAGES, null, 2))
       throw new Error("Unused components are found")
     }
   } catch (error) {
