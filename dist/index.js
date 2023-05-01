@@ -3206,6 +3206,8 @@ const getCurrentActiveFilter = (activeRegex) => {
 const createCwdPaths = (componentFolderOld, occurrenceFolderOld) => {
   const repoFullPath = process.cwd()
 
+  console.log({componentFolderOld, occurrenceFolderOld})
+  
   const componentFolder = componentFolderOld.map(folder => {
     return `${repoFullPath}${path.sep}${folder}`.replace(/\\/g, '/')
   })  
