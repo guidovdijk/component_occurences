@@ -9859,6 +9859,13 @@ const run = async() => {
 
     const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
+    console.log({
+      componentFiles,
+      allFiles,
+      componentNames,
+      NOT_USED_PACKAGES
+    })
+
     core.info(`NOT_USED_COMPONENTS: ${JSON.stringify(NOT_USED_PACKAGES)}`);
     core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES));
     core.setOutput("TEST", "test value");
