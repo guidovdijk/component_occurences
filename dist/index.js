@@ -9863,7 +9863,6 @@ const run = async() => {
     const { componentFolder, occurrenceFolder } = createCwdPaths(JSON.parse(baseComponentFolder), JSON.parse(baseOccurrenceFolder))
 
     console.log({
-      repoFullPath,
       componentFolder,
       occurrenceFolder,
       componentNameIgnore,
