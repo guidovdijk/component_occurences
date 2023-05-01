@@ -28,7 +28,7 @@ const run = async() => {
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
     const componentNames = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    const NOT_USED_PACKAGES = getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
+    const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
     core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES));
   } catch (error) {
