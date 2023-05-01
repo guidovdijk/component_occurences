@@ -3189,8 +3189,9 @@ const ACTIVE_FILTER = {
 }
 
 ;// CONCATENATED MODULE: ./src/setup/setup.js
+const path = __nccwpck_require__(17)
 
-
+;
 
 const getCurrentActiveFilter = (activeRegex) => {
   if(!['react', 'vue', 'angular', 'custom'].includes(activeRegex)){
@@ -3202,17 +3203,17 @@ const getCurrentActiveFilter = (activeRegex) => {
   return filter
 }
 
-const createCwdPaths = (componentFolder, occurrenceFolder) => {
+const createCwdPaths = (componentFolderOld, occurrenceFolderOld) => {
   const repoFullPath = process.cwd()
 
-  const newComponentFolder = componentFolder.map(folder => {
-    return `${repoFullPath}/${folder}`
+  const componentFolder = componentFolderOld.map(folder => {
+    return `${repoFullPath}${path.sep}${folder}`.replace(/\\/g, '/')
   })  
-  const newOccurrenceFolder = occurrenceFolder.map(folder => {
-    return `${repoFullPath}/${folder}`
-  })  
+  const occurrenceFolder = occurrenceFolderOld.map(folder => {
+    return `${repoFullPath}${path.sep}${folder}`.replace(/\\/g, '/')
+  })
 
-  return { newComponentFolder, newOccurrenceFolder }
+  return { componentFolder, occurrenceFolder }
 }
 // EXTERNAL MODULE: ./node_modules/brace-expansion/index.js
 var brace_expansion = __nccwpck_require__(850);
@@ -3477,12 +3478,12 @@ const defaultPlatform = (typeof process === 'object' && process
         process.env.__MINIMATCH_TESTING_PLATFORM__) ||
         process.platform
     : 'posix');
-const path = {
+const mjs_path = {
     win32: { sep: '\\' },
     posix: { sep: '/' },
 };
 /* c8 ignore stop */
-const sep = defaultPlatform === 'win32' ? path.win32.sep : path.posix.sep;
+const sep = defaultPlatform === 'win32' ? mjs_path.win32.sep : mjs_path.posix.sep;
 minimatch.sep = sep;
 const GLOBSTAR = Symbol('globstar **');
 minimatch.GLOBSTAR = GLOBSTAR;
@@ -9761,6 +9762,7 @@ const filterByComponentName = (arr, ignoreComponentArr) => {
 const getFileContent = async(path, settings) => {
   const paths = await glob(path, settings)
   
+  console.log(path)
   const files = paths.map(async file => {
     try {
       const content = await external_fs_.promises.readFile(file);

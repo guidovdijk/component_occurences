@@ -4,7 +4,7 @@ import {
   GLOB_SETTINGS
 } from "./src/utils/constants";
 
-import { getCurrentActiveFilter } from './src/setup/setup'
+import { getCurrentActiveFilter, createCwdPaths } from './src/setup/setup'
 
 import { getFileContent } from './src/utils/helpers'
 
@@ -13,8 +13,11 @@ import { getAllOccurrences } from "./src/getAllOccurrences";
 
 const run = async() => {
   try {
-    const componentFolder = ["./test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"];
-    const occurrenceFolder = ["./test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"];
+    const t = ["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"];
+    const t2 = ["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"];
+
+    const { componentFolder, occurrenceFolder } = createCwdPaths(t, t2)
+
     const componentNameIgnore = ["Container"];
     const activeRegex = 'react';
     
@@ -22,6 +25,7 @@ const run = async() => {
       EXPORT_REGEX, 
       COMPONENT_OCCURRENCE_REGEX, 
     } = getCurrentActiveFilter(activeRegex)
+
 
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)

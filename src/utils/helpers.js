@@ -16,6 +16,7 @@ export const filterByComponentName = (arr, ignoreComponentArr) => {
 export const getFileContent = async(path, settings) => {
   const paths = await glob(path, settings)
   
+  console.log(path)
   const files = paths.map(async file => {
     try {
       const content = await fsPromises.readFile(file);

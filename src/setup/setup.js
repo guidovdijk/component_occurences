@@ -1,7 +1,8 @@
+const path = require('path')
+
 import { 
   ACTIVE_FILTER
 } from '../utils/constants'
-
 
 export const getCurrentActiveFilter = (activeRegex) => {
   if(!['react', 'vue', 'angular', 'custom'].includes(activeRegex)){
@@ -13,15 +14,15 @@ export const getCurrentActiveFilter = (activeRegex) => {
   return filter
 }
 
-export const createCwdPaths = (componentFolder, occurrenceFolder) => {
+export const createCwdPaths = (componentFolderOld, occurrenceFolderOld) => {
   const repoFullPath = process.cwd()
 
-  const newComponentFolder = componentFolder.map(folder => {
-    return `${repoFullPath}/${folder}`
+  const componentFolder = componentFolderOld.map(folder => {
+    return `${repoFullPath}${path.sep}${folder}`.replace(/\\/g, '/')
   })  
-  const newOccurrenceFolder = occurrenceFolder.map(folder => {
-    return `${repoFullPath}/${folder}`
-  })  
+  const occurrenceFolder = occurrenceFolderOld.map(folder => {
+    return `${repoFullPath}${path.sep}${folder}`.replace(/\\/g, '/')
+  })
 
-  return { newComponentFolder, newOccurrenceFolder }
+  return { componentFolder, occurrenceFolder }
 }
