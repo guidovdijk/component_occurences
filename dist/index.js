@@ -3177,10 +3177,7 @@ __nccwpck_require__.r(__webpack_exports__);
 ;// CONCATENATED MODULE: ./src/utils/constants.js
 const GLOB_SETTINGS = { 
   withFileTypes: false,
-  noDir: true,
-  ignore: {
-    ignored: (p) => p.name.includes("story") || p.name.includes("test")
-  }
+  noDir: true
 };
 
 const ACTIVE_FILTER = {
@@ -9751,20 +9748,20 @@ const filterByComponentName = (arr, ignoreComponentArr) => {
 
 const getFileContent = async(path, settings) => {
   const paths = await glob(path, settings)
-
+  
   const files = paths.map(async file => {
     try {
       const content = await external_fs_.promises.readFile(file);
-      
       return content.toString();
     } catch (err) {
       console.log(err);
     }
   })
-
-  const result = Promise.all(files).then(file => {
+  
+  const result = await Promise.all(files).then(file => {
     return file
   })
+
   return result
 }
 
@@ -9851,10 +9848,11 @@ const run = async() => {
 
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
-    const componentNames = getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
+    const componentNames = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
     const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
+    core.info(`NOT_USED_COMPONENTS: ${JSON.stringify(NOT_USED_PACKAGES)}`);
     core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES));
   } catch (error) {
     core.setFailed(error.message);
