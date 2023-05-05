@@ -9912,16 +9912,16 @@ const run = async() => {
 
     const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
 
-    const fileLink = `[Test2](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}/test_folder/components/Avatar/test_2.tsx)`;
-
-
+    
+    
     componentPositions.forEach(component => {
+      // const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}/test_folder/components/Avatar/test_2.tsx`;
       // core.warning(new Error(`Unused component found "${fileLink}"`))
       core.warning(
-        new Error(`Unused component found`),
+        new Error(`Unused component found: ${component.path}#${component.startLine}`),
         {
           title: `Component "${component.name}" is not used in the project`,
-          file: fileLink,
+          file: component.path,
           startLine: component.startLine,
           startColumn: component.startColumn
         }
