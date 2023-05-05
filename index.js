@@ -46,9 +46,9 @@ const run = async() => {
     componentPositions.forEach(component => {
       // core.warning(new Error(`Unused component found "${fileLink}"`))
       core.warning(
-        new Error('Unused component found'),
+        new Error(`Unused component found: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}/test_folder/components/Avatar/test_2.tsx`),
         {
-          title: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}/test_folder/components/Avatar/test_2.tsx}\nComponent "${component.name}" is not used in the project`,
+          title: `Component "${component.name}" is not used in the project`,
           file: 'test_folder/components/Avatar/test_2.tsx',
           startLine: component.startLine,
           startColumn: component.startColumn
