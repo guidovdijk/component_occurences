@@ -40,14 +40,12 @@ const run = async() => {
 
     const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
 
-    console.log(componentPositions)
-
     componentPositions.forEach(component => {
       core.warning(
-        'Unused component found',
+        new Error('Unused component found'),
         {
           title: `component "${component.name}" is not used in the project`,
-          file: component.file,
+          file: './test_folder/components/Avatar/test_2.tsx',
           startLine: component.startLine,
           startColumn: component.startColumn
         }
