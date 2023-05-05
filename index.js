@@ -10,6 +10,7 @@ import { getFileContent } from './src/utils/helpers'
 
 import { getAllComponentNames } from "./src/getAllComponentNames";
 import { getAllOccurrences } from "./src/getAllOccurrences";
+import { getComponentPosition } from "./src/getComponentPosition";
 
 const run = async() => {
   try {
