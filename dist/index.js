@@ -9922,15 +9922,12 @@ const run = async() => {
     
     
     componentPositions.forEach(component => {
-      const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}${component.basename}#${component.startLine}`;
+      const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}${component.basename}#L${component.startLine}`;
 
       core.warning(
         new Error(`Unused component "${component.name}" found: ${url}`),
         {
-          title: `Component "${component.name}" is not used in the project`,
-          file: url,
-          startLine: component.startLine,
-          startColumn: component.startColumn
+          title: `Component "${component.name}" is not used in the project`
         }
       )
     });
