@@ -19,7 +19,11 @@ export const getFileContent = async(path, settings) => {
   const files = paths.map(async file => {
     try {
       const content = await fsPromises.readFile(file);
-      return content.toString();
+
+      return {
+        path: file,
+        content: content.toString()
+      }
     } catch (err) {
       console.log(err);
     }

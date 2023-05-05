@@ -26,20 +26,32 @@ const run = async() => {
 
     const {
       EXPORT_REGEX, 
-      COMPONENT_OCCURRENCE_REGEX, 
+      COMPONENT_OCCURRENCE_REGEX,
+      POSITION_REGEX
     } = getCurrentActiveFilter(activeRegex)
 
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
-    const componentNames = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
+    const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES, null, 2));
+    const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
-    if(NOT_USED_PACKAGES && NOT_USED_PACKAGES.length > 0){
-      throw new Error(`Unused components are found\n${JSON.stringify(NOT_USED_PACKAGES, null, 2)}`)
-    }
+    const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
+
+    console.log(componentPositions)
+
+    componentPositions.forEach(component => {
+      core.warning({
+        message: 'Unused component found',
+        properties: {
+          title: `component "${component.name}" is not used in the project`,
+          file: component.file,
+          startLine: component.startLine,
+          startColumn: component.startColumn
+        }
+      })
+    });
   } catch (error) {
     core.setFailed(error.message);
   }

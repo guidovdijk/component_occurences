@@ -10,6 +10,7 @@ import { getFileContent } from './src/utils/helpers'
 
 import { getAllComponentNames } from "./src/getAllComponentNames";
 import { getAllOccurrences } from "./src/getAllOccurrences";
+import { getComponentPosition } from "./src/getComponentPosition";
 
 const run = async() => {
   try {
@@ -23,17 +24,22 @@ const run = async() => {
     
     const {
       EXPORT_REGEX, 
-      COMPONENT_OCCURRENCE_REGEX, 
+      COMPONENT_OCCURRENCE_REGEX,
+      POSITION_REGEX
     } = getCurrentActiveFilter(activeRegex)
 
 
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
-    const componentNames = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    const NOT_USED_PACKAGES = getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
+    const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    console.log("NOT_USED_COMPONENTS: ", JSON.stringify(NOT_USED_PACKAGES));
+    const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
+
+    const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
+    console.log(componentPositions)
+
+    // console.log("NOT_USED_COMPONENTS: ", JSON.stringify(NOT_USED_PACKAGES, null, 2));
   } catch (error) {
     console.log(error);
   }
