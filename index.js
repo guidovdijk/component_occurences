@@ -45,7 +45,7 @@ const run = async() => {
         new Error('Unused component found'),
         {
           title: `component "${component.name}" is not used in the project`,
-          file: './test_folder/components/Avatar/test_2.tsx',
+          file: 'test_folder/components/Avatar/test_2.tsx',
           startLine: component.startLine,
           startColumn: component.startColumn
         }
