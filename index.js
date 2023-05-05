@@ -43,15 +43,15 @@ const run = async() => {
     console.log(componentPositions)
 
     componentPositions.forEach(component => {
-      core.warning({
-        message: 'Unused component found',
-        properties: {
+      core.warning(
+        'Unused component found',
+        {
           title: `component "${component.name}" is not used in the project`,
           file: component.file,
           startLine: component.startLine,
           startColumn: component.startColumn
         }
-      })
+      )
     });
   } catch (error) {
     core.setFailed(error.message);
