@@ -1,5 +1,4 @@
 name: Component Check
-description: Checks which components are unused
 
 on: [push]
 

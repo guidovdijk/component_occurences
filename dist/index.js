@@ -3183,6 +3183,7 @@ const GLOB_SETTINGS = {
 const ACTIVE_FILTER = {
   "react": {
     EXPORT_REGEX: new RegExp(`((?<=export default function )|(?<=export const )|(?<=export default React.memo\\()|(?<=export default (?!function|React)))(\\w+)`, "gm"),
+    POSITION_REGEX: (word) => new RegExp(`((?<=export default function )|(?<=export const )|(?<=export default React.memo\\()|(?<=export default (?!function|React)))(${word})\\b`, "gm"),
     COMPONENT_OCCURRENCE_REGEX: (word) => new RegExp(`<${word}(\\W|$)`, "gm"),
     FILE_EXTENSIONS: [".tsx", ".jsx", '.js', '.ts']
   }
@@ -9765,7 +9766,11 @@ const getFileContent = async(path, settings) => {
   const files = paths.map(async file => {
     try {
       const content = await external_fs_.promises.readFile(file);
-      return content.toString();
+
+      return {
+        path: file,
+        content: content.toString()
+      }
     } catch (err) {
       console.log(err);
     }
@@ -9799,39 +9804,47 @@ const createRegexFunctionFromString = (text) => {
 
 const getAllComponentNames = (componentFiles, EXPORT_REGEX, componentNameIgnore) => {
   const matches = componentFiles.map(file => {
-    const names = file.match(EXPORT_REGEX);
+    const names = file.content.match(EXPORT_REGEX);
     const filteredComponentNames = filterByComponentName(names, componentNameIgnore)
 
     if(filteredComponentNames){
-      return filteredComponentNames
+      return { 
+        filteredComponentNames,
+        ...file
+      }
     }
   }).flat(1)
 
+  // Return array of names and positions of the names
   return matches
 }
 
 ;// CONCATENATED MODULE: ./src/getAllOccurrences.js
 
 
-const getAllOccurrences = (componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX) => {
-  const occurrences = componentNames.map(name => {
-    const regex = COMPONENT_OCCURRENCE_REGEX(name)
+const getAllOccurrences = (componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX) => {
+  const occurrences = [];
 
-    let value = 0
-    allFiles.forEach(file => {
-      const matches = file.match(regex);
+  componentObjects.forEach(component => {
+    component.filteredComponentNames.forEach(name => {
+      const regex = COMPONENT_OCCURRENCE_REGEX(name)
+  
+      let value = 0
+      allFiles.forEach(file => {
+        const matches = file.content.match(regex);
+  
+        if(matches !== null){
+          value += matches.length
+        }
+      });
 
-      if(matches !== null){
-        value += matches.length
-      }
-    });
-
-    return { name, value }
+      occurrences.push({ name, value, path: component.path, content: component.content })
+    })
   })
 
   const result = filterByOccurrenceCount(occurrences)
   
-  return result.sort((a, b) => b.value - a.value)
+  return result
 }
 
 ;// CONCATENATED MODULE: ./index.js
@@ -9861,20 +9874,32 @@ const run = async() => {
 
     const {
       EXPORT_REGEX, 
-      COMPONENT_OCCURRENCE_REGEX, 
+      COMPONENT_OCCURRENCE_REGEX,
+      POSITION_REGEX
     } = getCurrentActiveFilter(activeRegex)
 
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
-    const componentNames = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    const NOT_USED_PACKAGES = await getAllOccurrences(componentNames, allFiles, COMPONENT_OCCURRENCE_REGEX)
+    const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
 
-    core.setOutput("NOT_USED_COMPONENTS", JSON.stringify(NOT_USED_PACKAGES, null, 2));
+    const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
 
-    if(NOT_USED_PACKAGES && NOT_USED_PACKAGES.length > 0){
-      throw new Error(`Unused components are found\n${JSON.stringify(NOT_USED_PACKAGES, null, 2)}`)
-    }
+    const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
+
+    console.log(componentPositions)
+
+    componentPositions.forEach(component => {
+      core.warning({
+        message: 'Unused component found',
+        properties: {
+          title: `component "${component.name}" is not used in the project`,
+          file: component.file,
+          startLine: component.startLine,
+          startColumn: component.startColumn
+        }
+      })
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
