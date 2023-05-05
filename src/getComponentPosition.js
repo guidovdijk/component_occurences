@@ -13,6 +13,7 @@ export const getComponentPosition = (components, POSITION_REGEX) => {
 
     return {
       name: component.name,
+      basename: component.basename,
       path: component.path,
       startLine: startLine + 1,
       startColumn

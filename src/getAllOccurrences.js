@@ -16,7 +16,12 @@ export const getAllOccurrences = (componentObjects, allFiles, COMPONENT_OCCURREN
         }
       });
 
-      occurrences.push({ name, value, path: component.path, content: component.content })
+      occurrences.push({ 
+        name, value, 
+        basename: component.basename, 
+        path: component.path, 
+        content: component.content
+      })
     })
   })
 

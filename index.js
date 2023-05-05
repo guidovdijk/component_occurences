@@ -43,10 +43,10 @@ const run = async() => {
     
     
     componentPositions.forEach(component => {
-      // const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}/test_folder/components/Avatar/test_2.tsx`;
-      // core.warning(new Error(`Unused component found "${fileLink}"`))
+      const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}${component.basename}#${component.startLine}`;
+
       core.warning(
-        new Error(`Unused component found: ${component.path}#${component.startLine}`),
+        new Error(`Unused component "${component.name}" found: ${url}`),
         {
           title: `Component "${component.name}" is not used in the project`,
           file: component.path,

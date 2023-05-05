@@ -9769,6 +9769,7 @@ const getFileContent = async(path, settings) => {
 
       return {
         path: file,
+        basename: file.split(process.cwd())[1].replace(/\\/g, '/'),
         content: content.toString()
       }
     } catch (err) {
@@ -9838,7 +9839,12 @@ const getAllOccurrences = (componentObjects, allFiles, COMPONENT_OCCURRENCE_REGE
         }
       });
 
-      occurrences.push({ name, value, path: component.path, content: component.content })
+      occurrences.push({ 
+        name, value, 
+        basename: component.basename, 
+        path: component.path, 
+        content: component.content
+      })
     })
   })
 
@@ -9863,6 +9869,7 @@ const getComponentPosition = (components, POSITION_REGEX) => {
 
     return {
       name: component.name,
+      basename: component.basename,
       path: component.path,
       startLine: startLine + 1,
       startColumn
@@ -9915,10 +9922,10 @@ const run = async() => {
     
     
     componentPositions.forEach(component => {
-      // const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}/test_folder/components/Avatar/test_2.tsx`;
-      // core.warning(new Error(`Unused component found "${fileLink}"`))
+      const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}${component.basename}#${component.startLine}`;
+
       core.warning(
-        new Error(`Unused component found: ${component.path}#${component.startLine}`),
+        new Error(`Unused component "${component.name}" found: ${url}`),
         {
           title: `Component "${component.name}" is not used in the project`,
           file: component.path,

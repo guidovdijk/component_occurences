@@ -22,6 +22,7 @@ export const getFileContent = async(path, settings) => {
 
       return {
         path: file,
+        basename: file.split(process.cwd())[1].replace(/\\/g, '/'),
         content: content.toString()
       }
     } catch (err) {
