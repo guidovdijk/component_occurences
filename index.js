@@ -35,12 +35,8 @@ const run = async() => {
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
 
     const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
-
     const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
-
     const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
-
-    
     
     componentPositions.forEach(component => {
       const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}${component.basename}#L${component.startLine}`;
