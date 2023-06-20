@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": false,
+    "alwaysStrict": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": false,
+    "lib": ["es2019", "ES2019.Array"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ES6",
+    "typeRoots": ["./node_modules/@types", "global.d.ts"],
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/helpers/hooks/*"],
+      "@/constants/*": ["src/helpers/constants/*"],
+      "@/utils/*": ["./src/helpers/utils/*"],
+      "@/styles/*": ["./src/styles/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "*": ["./src/typings/*.d.ts"]
+    },
+  },
+  "include": ["**/*.ts", "global.d.ts"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "dist"
+  ]
+}

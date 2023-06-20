@@ -1,5 +1,3 @@
-const core = require('@actions/core');
-
 import {
   GLOB_SETTINGS
 } from "./src/utils/constants";
@@ -14,8 +12,8 @@ import { getComponentPosition } from "./src/getComponentPosition";
 
 const run = async() => {
   try {
-    const t = ["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"];
-    const t2 = ["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"];
+    const t = JSON.parse('["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]');
+    const t2 = JSON.parse('["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]');
 
     const { componentFolder, occurrenceFolder } = createCwdPaths(t, t2)
 

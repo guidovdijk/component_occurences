@@ -1,7 +1,7 @@
-import { filterByOccurrenceCount } from './utils/helpers';
+import { IOccurrencesProps, filterByOccurrenceCount } from './utils/helpers';
 
 export const getAllOccurrences = (componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX) => {
-  const occurrences = [];
+  const occurrences: IOccurrencesProps[] = [];
 
   componentObjects.forEach(component => {
     component.filteredComponentNames.forEach(name => {
@@ -17,7 +17,8 @@ export const getAllOccurrences = (componentObjects, allFiles, COMPONENT_OCCURREN
       });
 
       occurrences.push({ 
-        name, value, 
+        name, 
+        value, 
         basename: component.basename, 
         path: component.path, 
         content: component.content

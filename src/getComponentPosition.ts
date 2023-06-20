@@ -1,4 +1,12 @@
-export const getComponentPosition = (components, POSITION_REGEX) => {
+interface IComponentProps {
+  name: string
+  basename: string
+  path: string
+  startLine: number
+  startColumn: number
+}
+
+export const getComponentPosition = (components, POSITION_REGEX): IComponentProps[] => {
   const result = components.map(component => {      
     let startLine = -1;
     let startColumn = 0;
