@@ -31,13 +31,10 @@ const run = async() => {
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
 
     const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
-
     const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
-
     const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
+    
     console.log(componentPositions)
-
-    // console.log("NOT_USED_COMPONENTS: ", JSON.stringify(NOT_USED_PACKAGES, null, 2));
   } catch (error) {
     console.log(error);
   }

@@ -1,3 +1,5 @@
+import { IOccurrencesProps } from "./utils/helpers"
+
 interface IComponentProps {
   name: string
   basename: string
@@ -6,7 +8,10 @@ interface IComponentProps {
   startColumn: number
 }
 
-export const getComponentPosition = (components, POSITION_REGEX): IComponentProps[] => {
+export const getComponentPosition = (
+  components: IOccurrencesProps[], 
+  POSITION_REGEX: (word: string) => RegExp
+): IComponentProps[] => {
   const result = components.map(component => {      
     let startLine = -1;
     let startColumn = 0;

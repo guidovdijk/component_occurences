@@ -23,7 +23,10 @@ const run = async() => {
       throw new Error("Please make sure the COMPONENT_FOLDER and OCCURRENCE_FOLDER are filled in")
     }
 
-    const { componentFolder, occurrenceFolder } = createCwdPaths(JSON.parse(baseComponentFolder), JSON.parse(baseOccurrenceFolder))
+    const { 
+      componentFolder, 
+      occurrenceFolder 
+    } = createCwdPaths(JSON.parse(baseComponentFolder), JSON.parse(baseOccurrenceFolder))
 
     const {
       EXPORT_REGEX, 

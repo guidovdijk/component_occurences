@@ -17,7 +17,15 @@ export const getCurrentActiveFilter = (activeRegex: filterType): IActiveFilterPr
   return filter
 }
 
-export const createCwdPaths = (componentFolderOld: string[], occurrenceFolderOld: string[]) => {
+type pathProps = {
+  componentFolder: string[],
+  occurrenceFolder: string[]
+}
+
+export const createCwdPaths = (
+  componentFolderOld: string[], 
+  occurrenceFolderOld: string[]
+): pathProps => {
   const repoFullPath = process.cwd()
   
   const componentFolder = componentFolderOld.map((folder: string) => {

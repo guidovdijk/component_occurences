@@ -1,6 +1,12 @@
-import { IOccurrencesProps, filterByOccurrenceCount } from './utils/helpers';
+import { IComponentNameProps } from './getAllComponentNames';
+import { IFileContentProps, IOccurrencesProps, filterByOccurrenceCount } from './utils/helpers';
 
-export const getAllOccurrences = (componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX) => {
+
+export const getAllOccurrences = (
+  componentObjects: IComponentNameProps[], 
+  allFiles: IFileContentProps[], 
+  COMPONENT_OCCURRENCE_REGEX: (word: string) => RegExp
+): IOccurrencesProps[] => {
   const occurrences: IOccurrencesProps[] = [];
 
   componentObjects.forEach(component => {

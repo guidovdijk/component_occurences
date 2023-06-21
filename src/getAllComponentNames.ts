@@ -9,20 +9,32 @@ export const getAllComponentNames = (
   EXPORT_REGEX: RegExp, 
   componentNameIgnore: string[]
 ): IComponentNameProps[] => {
-  const matches = componentFiles.map((file: IFileContentProps) => {
+  const matches: (IComponentNameProps | null)[] = componentFiles.map((file: IFileContentProps) => {
     const names = file.content.match(EXPORT_REGEX);
+
+    if(!names){
+      return null
+    }
+
     const filteredComponentNames = filterByComponentName(names, componentNameIgnore)
 
     if(filteredComponentNames){
-      return { 
+      const res: IComponentNameProps = { 
+        ...file,
         filteredComponentNames,
-        ...file
       }
+
+      return res
     }
+
+    return null
   }).flat(1)
 
 
-  // Return array of names and positions of the names
-  return matches.filter(item => item !== null);
+  if(!matches){
+    throw new Error("No Matches found");
+  }
 
+  const res: IComponentNameProps[] = matches.filter(item => item !== null) as IComponentNameProps[];
+  return res
 }
