@@ -10,7 +10,7 @@ import { getFileContent } from './utils/helpers'
 
 import { getAllComponentNames } from "./getAllComponentNames";
 import { getAllOccurrences } from "./getAllOccurrences";
-import { getComponentPosition } from "./getComponentPosition";
+import { IComponentProps, getComponentPosition } from "./getComponentPosition";
 
 const run = async() => {
   try {
@@ -37,11 +37,11 @@ const run = async() => {
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
 
-    const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
+    const componentObjects = getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
     const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
     const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
     
-    componentPositions.forEach((component: { basename: any; startLine: any; name: any; }) => {
+    componentPositions.forEach((component: IComponentProps) => {
       const url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/blob/${process.env.GITHUB_SHA}${component.basename}#L${component.startLine}`;
 
       core.warning(

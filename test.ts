@@ -12,12 +12,12 @@ import { getComponentPosition } from "./src/getComponentPosition";
 
 const run = async() => {
   try {
-    const t = JSON.parse('["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]');
-    const t2 = JSON.parse('["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]');
+    const componentsString = JSON.parse('["test_folder/components/**/!(Icons|Illucons)/*!(.story|.test).tsx"]');
+    const occurrenceString = JSON.parse('["test_folder/**/!(Icons|Illucons)/*!(.story|.test).tsx"]');
+    const componentNameIgnore = JSON.parse('["Test20"]');
 
-    const { componentFolder, occurrenceFolder } = createCwdPaths(t, t2)
+    const { componentFolder, occurrenceFolder } = createCwdPaths(componentsString, occurrenceString)
 
-    const componentNameIgnore = ["Container"];
     const activeRegex = 'react';
     
     const {
@@ -30,7 +30,7 @@ const run = async() => {
     const componentFiles = await getFileContent(componentFolder, GLOB_SETTINGS)
     const allFiles = await getFileContent(occurrenceFolder, GLOB_SETTINGS)
 
-    const componentObjects = await getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
+    const componentObjects = getAllComponentNames(componentFiles, EXPORT_REGEX, componentNameIgnore)
     const unusedComponents = getAllOccurrences(componentObjects, allFiles, COMPONENT_OCCURRENCE_REGEX)
     const componentPositions = getComponentPosition(unusedComponents, POSITION_REGEX)
     

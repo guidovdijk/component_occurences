@@ -1,6 +1,6 @@
 import { IOccurrencesProps } from "./utils/helpers"
 
-interface IComponentProps {
+export interface IComponentProps {
   name: string
   basename: string
   path: string
